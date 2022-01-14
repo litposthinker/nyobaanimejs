@@ -1336,29 +1336,91 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var animejs_lib_anime_es_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! animejs/lib/anime.es.js */ "./node_modules/animejs/lib/anime.es.js");
  // alice to server
 
-var defaultAnime = (0,animejs_lib_anime_es_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
-  targets: ".package",
+(0,animejs_lib_anime_es_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+  targets: ".packageAlice",
   keyframes: [{
     top: 225,
     left: 325
+  }, {
+    top: 195
   }, {
     top: 10,
     delay: 100
   }],
   loop: true,
-  duration: 3000,
+  duration: 1000,
+  easing: "easeInOutQuad",
+  autoplay: true
+}); // bob to trash
+
+var packageBobTrash = (0,animejs_lib_anime_es_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+  targets: ".packageBob",
+  keyframes: [{
+    top: 225,
+    left: 325,
+    opacity: 1
+  }, {
+    top: 195
+  }, {
+    top: 195,
+    left: 0,
+    delay: 100,
+    opacity: 0
+  }],
+  duration: 1000,
+  easing: "easeInOutQuad",
+  autoplay: false
+}); // bob to server
+
+var packageBobServer = (0,animejs_lib_anime_es_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+  targets: ".packageBob",
+  opacity: 1,
+  keyframes: [{
+    top: 225,
+    left: 325
+  }, {
+    top: 195
+  }, {
+    top: 10,
+    delay: 100
+  }],
+  duration: 1000,
   easing: "easeInOutQuad",
   autoplay: false
 });
-document.getElementById("play").addEventListener("click", function () {
-  defaultAnime.play();
-  return;
+var input = document.getElementsByTagName("input");
+document.getElementsByTagName("button")[0].addEventListener("click", function () {
+  if (!input[0].value || !input[1].value) {
+    return;
+  }
+
+  if (input[0].value === input[1].value) {
+    packageBobTrash.play();
+  } else {
+    packageBobServer.play();
+  }
 });
-document.getElementById("reset").addEventListener("click", function () {
-  defaultAnime.reset();
-  return;
-}); // document.querySelector(".reset").onclick = defaultAnime.restart;
-// document.querySelector(".reset").onclick = defaultAnime.pause;
+
+var _loop = function _loop(index) {
+  input[index].addEventListener("input", function () {
+    var value = input[index].value;
+
+    if (!value) {
+      return;
+    }
+
+    if (!!value.match(/[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g)) {
+      value = value.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, "");
+    }
+
+    var temp = value.match(/.{1,2}/g).join(":");
+    input[index].value = temp.toUpperCase();
+  });
+};
+
+for (var index = 0; index < input.length; index++) {
+  _loop(index);
+}
 
 /***/ }),
 
